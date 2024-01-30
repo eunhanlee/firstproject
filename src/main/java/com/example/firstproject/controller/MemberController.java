@@ -16,11 +16,13 @@ public class MemberController {
 
     @Autowired
     private MemberRepository memberRepository;
+
     @GetMapping("/signup")
     public String niceToMeetYou(Model model) {
         return "members/new";
     }
-    @PostMapping("/members/create")
+
+    @PostMapping("/join")
     public String createArticle(MemberForm form){
         log.info(form.toString());
         Member member  = form.toEntity();
