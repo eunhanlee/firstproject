@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
+
 @Slf4j
 @Controller
 public class ArticleController {
@@ -36,12 +38,24 @@ public class ArticleController {
     public String show(@PathVariable Long id, Model model) {
         log.info("id = " + id);
 //        Optional<Article> articleEntity = articleRepository.findById(id);
-        Article arricleEntity = articleRepository.findById(id).orElse(null);
-        model.addAttribute("article", arricleEntity);
-
-
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+        model.addAttribute("article", articleEntity);
 
         return "article/show";
+    }
+
+    @GetMapping("/article")
+    public String index(Model model) {
+
+        // findAll() will return Iterable. 3 ways to fix.
+//        1. upcasting
+//        Iterable<Article> articleEntityList = articleRepository.findAll();
+//        2. downcasting
+//        List<Article> articleEntityList = (List<Article>)articleRepository.findAll();
+//        3. override the findAll method in ArticleRepository Interface.
+        ArrayList<Article> articleEntityList = articleRepository.findAll();
+        model.addAttribute("articleList", articleEntityList);
+        return "article/index";
     }
 
 
