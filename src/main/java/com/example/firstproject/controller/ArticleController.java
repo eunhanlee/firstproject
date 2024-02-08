@@ -31,7 +31,7 @@ public class ArticleController {
         log.info(article.toString());
         Article saved = articleRepository.save(article);
         log.info(saved.toString());
-        return "redirect:/article/"+saved.getId();
+        return "redirect:/article/" + saved.getId();
     }
 
     @GetMapping("/article/{id}")
@@ -59,11 +59,21 @@ public class ArticleController {
     }
 
     @GetMapping("/article/{id}/edit")
-    public String edit(@PathVariable Long id, Model model){
+    public String edit(@PathVariable Long id, Model model) {
         Article articleEntity = articleRepository.findById(id).orElse(null);
         model.addAttribute("article", articleEntity);
 
         return "article/edit";
+    }
+
+    @PostMapping("/article/update")
+    public String update(ArticleForm form) {
+        log.info(form.toString());
+        Article articleEntity = form.toEntity();
+        log.info(articleEntity.toString());
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+        if (target != null) articleRepository.save(articleEntity);
+        return "redirect:/article/"+articleEntity.getId();
     }
 
 
